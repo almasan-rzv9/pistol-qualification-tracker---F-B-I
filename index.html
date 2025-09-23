@@ -28,14 +28,14 @@
   .btn{font:600 14px Inter;border:1px solid #999;background:#efefef;padding:8px 12px;border-radius:8px;cursor:pointer}
   .btn:active{transform:translateY(1px)}
 
-  /* Table layout */
+  /* Table layout (screen) */
   table{width:100%;border-collapse:collapse;table-layout:fixed}
   thead th{font:700 14px Inter;color:#fff;background:#000;padding:8px 8px;text-align:left;white-space:nowrap}
   tbody td{padding:8px 8px;border-bottom:1px solid var(--grid);vertical-align:middle}
   tbody tr:nth-child(even) td{background:var(--shade)}
   td,th{font-variant-numeric: tabular-nums}
 
-  /* Column sizing */
+  /* Column sizing (screen) */
   .c-stage{width:56px;text-align:center}
   .c-dist{width:92px;text-align:center}
   .c-start{width:110px}
@@ -63,14 +63,29 @@
   .sig .label{font:600 12px Inter;color:#555;margin-bottom:6px}
   .sig .line{border-bottom:1px solid #999;height:24px}
 
-  /* Print */
+  /* PRINT fixes: Notes stays wide, other columns shrink; smaller padding & font */
   @page{size:A4;margin:16mm 14mm}
   @media print{
+    body{font-size:14px; line-height:1.45}
     .toolbar{display:none}
     thead{display:table-header-group}
     tfoot{display:table-footer-group}
     .line-input{border-bottom:1px solid #000}
     .sig .line{border-color:#000}
+
+    /* let the browser compute widths naturally */
+    table{table-layout:auto}
+    thead th, tbody td{padding:6px 6px}
+
+    /* percentages so Notes gets the space it arepune */
+    .c-stage{width:7%}
+    .c-dist{width:9%}
+    .c-start{width:12%}
+    .c-shots{width:7%}
+    .c-time{width:11%}
+    .c-hits{width:12%}
+    .c-pts{width:8%}
+    .c-notes{width:auto; min-width:280px} /* IMPORTANT: keeps Notes readable */
   }
 
   @media (max-width:680px){
@@ -154,7 +169,7 @@
   </div>
 
 <script>
-  const KEY = "fbi_pistol_qual_v2";
+  const KEY = "fbi_pistol_qual_v3";
 
   function sumShots(){
     let s = 0;
