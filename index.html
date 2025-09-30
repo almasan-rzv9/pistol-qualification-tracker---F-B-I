@@ -5,51 +5,60 @@
 <title>FBI Pistol Qualification</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <style>
-  /* Typography & base */
+  /* Fonts & base */
   @import url("https://fonts.googleapis.com/css2?family=Inter:wght@600;800&family=Source+Serif+4:ital@0;1&display=swap");
   :root{--ink:#111;--muted:#666;--grid:#dcdcdc;--shade:#f7f7f7}
   html,body{background:#fff;color:var(--ink);margin:0}
   body{font:16px/1.55 "Source Serif 4", Georgia, serif}
-  .wrap{max-width:940px;margin:28px auto 64px;padding:0 14px}
-  h1{font:800 36px/1.1 Inter, system-ui, sans-serif; margin:0 0 10px}
+  html{-webkit-text-size-adjust:100%}
+  input,select,textarea{font-size:16px} /* prevent iOS zoom on focus */
+
+  .wrap{max-width:960px;margin:28px auto 64px;padding:0 14px}
+  h1{font:800 34px/1.15 Inter, system-ui, sans-serif;margin:0 0 6px}
 
   /* Intro bullets */
-  .bullets{margin:8px 0 16px;padding-left:22px}
+  .bullets{margin:8px 0 14px;padding-left:22px}
   .bullets li{margin:4px 0}
 
   /* Meta */
-  .meta{margin:6px 0 10px}
+  .meta{margin:8px 0 10px}
   .meta-row{display:flex;align-items:center;gap:18px;margin:6px 0}
-  .lbl{font:600 13px Inter, system-ui, sans-serif;min-width:120px;color:#444}
-  .line-input{flex:1;border:0;border-bottom:1px solid #999;padding:6px 6px;background:transparent;font:16px/1.2 "Source Serif 4", Georgia, serif;outline:none}
+  .lbl{font:600 13px Inter;min-width:120px;color:#444}
+  .line-input{flex:1;border:0;border-bottom:1px solid #999;padding:6px;background:transparent;font:16px/1.2 "Source Serif 4";outline:none}
 
   /* Toolbar */
-  .toolbar{position:sticky;top:0;background:#fff;border-bottom:1px solid #eee;padding:8px 0 10px;display:flex;gap:8px;justify-content:flex-end;z-index:5}
+  .toolbar{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid #eee;padding:8px 0 10px;display:flex;gap:8px;justify-content:flex-end}
   .btn{font:600 14px Inter;border:1px solid #999;background:#efefef;padding:8px 12px;border-radius:8px;cursor:pointer}
   .btn:active{transform:translateY(1px)}
 
-  /* Table layout (screen) */
-  table{width:100%;border-collapse:collapse;table-layout:fixed}
-  thead th{font:700 14px Inter;color:#fff;background:#000;padding:8px 8px;text-align:left;white-space:nowrap}
-  tbody td{padding:8px 8px;border-bottom:1px solid var(--grid);vertical-align:middle}
+  /* Table (screen: auto so Notes can breathe) */
+  table{width:100%;border-collapse:collapse;table-layout:auto}
+  thead th{font:700 14px Inter;color:#fff;background:#000;padding:8px;text-align:left}
+  tbody td{padding:8px;border-bottom:1px solid var(--grid);vertical-align:middle}
   tbody tr:nth-child(even) td{background:var(--shade)}
-  td,th{font-variant-numeric: tabular-nums}
+  td,th{font-variant-numeric:tabular-nums}
 
-  /* Column sizing (screen) */
-  .c-stage{width:56px;text-align:center}
-  .c-dist{width:92px;text-align:center}
-  .c-start{width:110px}
-  .c-shots{width:64px;text-align:center}
-  .c-time{width:106px;text-align:center}
-  .c-notes{width:auto}
-  .c-hits{width:122px;text-align:center}
-  .c-pts{width:86px;text-align:center}
+  /* Column widths (screen) */
+  .c-stage{width:7%; text-align:center}
+  .c-dist{width:10%; text-align:center}
+  .c-start{width:14%}
+  .c-shots{width:8%; text-align:center}
+  .c-time{width:10%; text-align:center}
+  .c-hits{width:14%; text-align:center}
+  .c-pts{width:8%; text-align:center}
 
-  /* Notes wrapping */
-  tbody td:nth-child(6){white-space:normal;word-break:break-word;hyphens:auto}
+  /* Bulletproof Notes wrapping */
+  .c-notes, td.c-notes, th.c-notes{
+    white-space:normal !important;
+    overflow-wrap:anywhere;
+    word-break:break-word;
+    hyphens:auto; -webkit-hyphens:auto; -ms-hyphens:auto;
+    line-break:anywhere;
+    width:auto; min-width:300px;
+  }
 
   /* Inputs & badges */
-  .hits{width:86px;padding:6px 8px;border:1px solid #bbb;border-radius:6px}
+  .hits{width:96px;max-width:100%;padding:6px 8px;border:1px solid #bbb;border-radius:6px}
   .pts-badge{display:inline-block;min-width:44px;padding:6px 8px;border-radius:8px;background:#eef3ff;border:0;font:600 14px Inter;text-align:center}
 
   /* Totals */
@@ -63,37 +72,33 @@
   .sig .label{font:600 12px Inter;color:#555;margin-bottom:6px}
   .sig .line{border-bottom:1px solid #999;height:24px}
 
-  /* PRINT fixes: Notes stays wide, other columns shrink; smaller padding & font */
+  /* Small screens */
+  @media (max-width:560px){
+    .wrap{padding:0 10px}
+    thead th, tbody td{padding:6px}
+    .hits{width:84px}
+    .c-notes{min-width:240px}
+  }
+
+  /* Print – fixed widths so printers don’t crush Notes */
   @page{size:A4;margin:16mm 14mm}
   @media print{
-    body{font-size:14px; line-height:1.45}
+    body{font-size:14px;line-height:1.45}
     .toolbar{display:none}
     thead{display:table-header-group}
-    tfoot{display:table-footer-group}
+    table{table-layout:fixed}
+    thead th,tbody td{padding:6px}
     .line-input{border-bottom:1px solid #000}
     .sig .line{border-color:#000}
 
-    /* let the browser compute widths naturally */
-    table{table-layout:auto}
-    thead th, tbody td{padding:6px 6px}
-
-    /* percentages so Notes gets the space it arepune */
-    .c-stage{width:7%}
-    .c-dist{width:9%}
-    .c-start{width:12%}
-    .c-shots{width:7%}
-    .c-time{width:11%}
-    .c-hits{width:12%}
-    .c-pts{width:8%}
-    .c-notes{width:auto; min-width:280px} /* IMPORTANT: keeps Notes readable */
-  }
-
-  @media (max-width:680px){
-    .wrap{padding:0 10px}
-    .c-start{width:96px}
-    .c-notes{width:auto}
-    .hits{width:76px}
-    .signs{grid-template-columns:1fr}
+    th.c-stage, td.c-stage {width:8% !important}
+    th.c-dist,  td.c-dist  {width:10% !important}
+    th.c-start, td.c-start {width:14% !important}
+    th.c-shots, td.c-shots {width:8% !important}
+    th.c-time,  td.c-time  {width:10% !important}
+    th.c-hits,  td.c-hits  {width:14% !important}
+    th.c-pts,   td.c-pts   {width:8% !important}
+    th.c-notes, td.c-notes {width:28% !important} /* keep Notes wide */
   }
 </style>
 </head>
@@ -102,11 +107,9 @@
     <h1>FBI Pistol Qualification</h1>
 
     <ul class="bullets">
-      <li>Round Count: <b>50</b></li>
-      <li>All draws from concealment unless otherwise noted. Ready position has firearm pointed at 45-degree angle to the ground in front of the target, safety engaged if applicable, finger off trigger.</li>
-      <li>QIT-99 target</li>
-      <li>All hits inside the “bottle” area are <b>2 points</b> each.</li>
-      <li><b>80 / 100</b> points required to pass.</li>
+      <li>Round count: <b>50</b>. Target: <b>QIT-99</b>.</li>
+      <li>Scoring: hits inside the “bottle” are <b>2 points</b> each. Max <b>100</b>.</li>
+      <li><b>PASS</b> requires <b>≥ 80 / 100</b>.</li>
     </ul>
 
     <div class="meta">
@@ -131,7 +134,7 @@
         <tr>
           <th class="c-stage">Stage</th>
           <th class="c-dist">Distance<br>(yards)</th>
-          <th class="c-start">Start<br>Position</th>
+          <th class="c-start">Start Position</th>
           <th class="c-shots">Shots</th>
           <th class="c-time">Time<br>(seconds)</th>
           <th class="c-notes">Notes</th>
@@ -140,22 +143,76 @@
         </tr>
       </thead>
       <tbody>
-        <tr data-shots="6"><td class="c-stage">1</td><td class="c-dist">3</td><td class="c-start">Draw</td><td class="c-shots">6</td><td class="c-time">6</td><td class="c-notes">Fire 3 strong hand, switch hands, fire 3 weak hand.</td><td class="c-hits"><input class="hits" type="number" min="0" max="6" step="1"></td><td class="c-pts"><span class="pts-badge">0</span></td></tr>
-        <tr data-shots="3"><td>2</td><td>5</td><td>Draw</td><td>3</td><td>3</td><td>Draw and fire 3 shots in 3 seconds.</td><td><input class="hits" type="number" min="0" max="3" step="1"></td><td><span class="pts-badge">0</span></td></tr>
-        <tr data-shots="3"><td>3</td><td>5</td><td>Ready</td><td>3</td><td>2</td><td>From the low ready position, aim and fire 3 shots in 2 seconds.</td><td><input class="hits" type="number" min="0" max="3" step="1"></td><td><span class="pts-badge">0</span></td></tr>
-        <tr data-shots="6"><td>4</td><td>5</td><td>Ready</td><td>6</td><td>4</td><td>From the low ready position, aim and fire 6 shots in 4 seconds.</td><td><input class="hits" type="number" min="0" max="6" step="1"></td><td><span class="pts-badge">0</span></td></tr>
-        <tr data-shots="5"><td>5</td><td>7</td><td>Draw</td><td>5</td><td>5</td><td>Draw and fire 5 shots in 5 seconds.</td><td><input class="hits" type="number" min="0" max="5" step="1"></td><td><span class="pts-badge">0</span></td></tr>
-        <tr data-shots="8"><td>6</td><td>7</td><td>Ready</td><td>8</td><td>8</td><td>Fire 4 shots, reload, fire 4 more shots.</td><td><input class="hits" type="number" min="0" max="8" step="1"></td><td><span class="pts-badge">0</span></td></tr>
-        <tr data-shots="5"><td>7</td><td>7</td><td>Ready</td><td>5</td><td>4</td><td>From the low ready, aim and fire 5 shots in 4 seconds.</td><td><input class="hits" type="number" min="0" max="5" step="1"></td><td><span class="pts-badge">0</span></td></tr>
-        <tr data-shots="3"><td>8</td><td>15</td><td>Draw</td><td>3</td><td>6</td><td>Draw and fire 3 shots in 6 seconds.</td><td><input class="hits" type="number" min="0" max="3" step="1"></td><td><span class="pts-badge">0</span></td></tr>
-        <tr data-shots="3"><td>9</td><td>15</td><td>Ready</td><td>3</td><td>5</td><td>From the low ready, aim and fire 3 shots in 5 seconds.</td><td><input class="hits" type="number" min="0" max="3" step="1"></td><td><span class="pts-badge">0</span></td></tr>
-        <tr data-shots="8"><td>10</td><td>25</td><td>Draw</td><td>8</td><td>20</td><td>Fire 4 shots, drop to kneeling, fire 4 more shots.</td><td><input class="hits" type="number" min="0" max="8" step="1"></td><td><span class="pts-badge">0</span></td></tr>
+        <tr data-shots="6">
+          <td class="c-stage">1</td>
+          <td class="c-dist">3</td>
+          <td class="c-start">Draw</td>
+          <td class="c-shots">6</td>
+          <td class="c-time">6</td>
+          <td class="c-notes">Fire 3 strong hand, switch hands, fire 3 weak hand.</td>
+          <td class="c-hits"><input class="hits" type="number" min="0" max="6" step="1"></td>
+          <td class="c-pts"><span class="pts-badge">0</span></td>
+        </tr>
+        <tr data-shots="3">
+          <td>2</td><td>5</td><td>Draw</td><td>3</td><td>3</td>
+          <td class="c-notes">Draw and fire 3 shots in 3 seconds.</td>
+          <td><input class="hits" type="number" min="0" max="3" step="1"></td>
+          <td><span class="pts-badge">0</span></td>
+        </tr>
+        <tr data-shots="3">
+          <td>3</td><td>5</td><td>Ready</td><td>3</td><td>2</td>
+          <td class="c-notes">From low ready, fire 3 shots in 2 seconds.</td>
+          <td><input class="hits" type="number" min="0" max="3" step="1"></td>
+          <td><span class="pts-badge">0</span></td>
+        </tr>
+        <tr data-shots="6">
+          <td>4</td><td>5</td><td>Ready</td><td>6</td><td>4</td>
+          <td class="c-notes">From low ready, fire 6 shots in 4 seconds.</td>
+          <td><input class="hits" type="number" min="0" max="6" step="1"></td>
+          <td><span class="pts-badge">0</span></td>
+        </tr>
+        <tr data-shots="5">
+          <td>5</td><td>7</td><td>Draw</td><td>5</td><td>5</td>
+          <td class="c-notes">Draw and fire 5 shots in 5 seconds.</td>
+          <td><input class="hits" type="number" min="0" max="5" step="1"></td>
+          <td><span class="pts-badge">0</span></td>
+        </tr>
+        <tr data-shots="8">
+          <td>6</td><td>7</td><td>Ready</td><td>8</td><td>8</td>
+          <td class="c-notes">Fire 4 shots, reload, fire 4 more shots.</td>
+          <td><input class="hits" type="number" min="0" max="8" step="1"></td>
+          <td><span class="pts-badge">0</span></td>
+        </tr>
+        <tr data-shots="5">
+          <td>7</td><td>7</td><td>Ready</td><td>5</td><td>4</td>
+          <td class="c-notes">From low ready, fire 5 shots in 4 seconds.</td>
+          <td><input class="hits" type="number" min="0" max="5" step="1"></td>
+          <td><span class="pts-badge">0</span></td>
+        </tr>
+        <tr data-shots="3">
+          <td>8</td><td>15</td><td>Draw</td><td>3</td><td>6</td>
+          <td class="c-notes">Draw and fire 3 shots in 6 seconds.</td>
+          <td><input class="hits" type="number" min="0" max="3" step="1"></td>
+          <td><span class="pts-badge">0</span></td>
+        </tr>
+        <tr data-shots="3">
+          <td>9</td><td>15</td><td>Ready</td><td>3</td><td>5</td>
+          <td class="c-notes">From low ready, fire 3 shots in 5 seconds.</td>
+          <td><input class="hits" type="number" min="0" max="3" step="1"></td>
+          <td><span class="pts-badge">0</span></td>
+        </tr>
+        <tr data-shots="8">
+          <td>10</td><td>25</td><td>Draw</td><td>8</td><td>20</td>
+          <td class="c-notes">Fire 4 shots, drop to kneeling, fire 4 more shots.</td>
+          <td><input class="hits" type="number" min="0" max="8" step="1"></td>
+          <td><span class="pts-badge">0</span></td>
+        </tr>
       </tbody>
     </table>
 
     <div class="totals">
-      <div class="pill">Total Shots: <span id="totShots">50</span></div>
-      <div class="pill">Max Points: <span id="maxPts">100</span></div>
+      <div class="pill">Total shots: <span id="totShots">50</span></div>
+      <div class="pill">Max points: <span id="maxPts">100</span></div>
       <div class="pill">Points: <span id="sumPts">0</span></div>
       <div class="pill">Score: <span id="pct">0%</span></div>
       <div class="pill" id="passBadge">FAIL</div>
@@ -169,7 +226,7 @@
   </div>
 
 <script>
-  const KEY = "fbi_pistol_qual_v3";
+  const KEY = "fbi_pistol_qual_full_v1";
 
   function sumShots(){
     let s = 0;
@@ -180,13 +237,19 @@
   function recalc(){
     let points = 0, maxPts = 0;
     document.querySelectorAll('#tbl tbody tr').forEach(tr=>{
-      const hits = Math.max(0, parseInt(tr.querySelector('.hits').value||0,10));
       const shots = +tr.dataset.shots;
-      const stagePts = Math.min(hits, shots) * 2;
+      const hitsEl = tr.querySelector('.hits');
+      let hits = parseInt(hitsEl.value||0,10);
+      if(!isFinite(hits)) hits = 0;
+      hits = Math.max(0, Math.min(hits, shots));
+      hitsEl.value = hits;
+
+      const stagePts = hits * 2; // bottle = 2 pts
       tr.querySelector('.pts-badge').textContent = stagePts;
       points += stagePts;
-      maxPts += shots*2;
+      maxPts += shots * 2;
     });
+
     document.getElementById('sumPts').textContent = points;
     document.getElementById('maxPts').textContent = maxPts;
     document.getElementById('totShots').textContent = sumShots();
@@ -194,7 +257,7 @@
     const pct = maxPts ? Math.round(points / maxPts * 100) : 0;
     document.getElementById('pct').textContent = pct + '%';
 
-    const pass = points >= 80; // pass rule
+    const pass = points >= 80;
     const badge = document.getElementById('passBadge');
     badge.textContent = pass ? 'PASS' : 'FAIL';
     badge.classList.toggle('pass', pass);
@@ -221,9 +284,9 @@
       if(!raw) { recalc(); return; }
       const obj = JSON.parse(raw);
       if(obj.header){
-        document.getElementById('m_date').value = obj.header.date || "";
-        document.getElementById('m_shooter').value = obj.header.shooter || "";
-        document.getElementById('m_pistol').value = obj.header.pistol || "";
+        document.getElementById('m_date').value   = obj.header.date    || "";
+        document.getElementById('m_shooter').value= obj.header.shooter || "";
+        document.getElementById('m_pistol').value = obj.header.pistol  || "";
       }
       const rows = document.querySelectorAll('#tbl tbody tr');
       (obj.rows||[]).forEach((r,i)=>{
