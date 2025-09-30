@@ -31,7 +31,7 @@
   .btn{font:600 14px Inter;border:1px solid #999;background:#efefef;padding:8px 12px;border-radius:8px;cursor:pointer}
   .btn:active{transform:translateY(1px)}
 
-  /* Table (screen: auto so Notes can breathe) */
+  /* Table (screen) */
   table{width:100%;border-collapse:collapse;table-layout:auto}
   thead th{font:700 14px Inter;color:#fff;background:#000;padding:8px;text-align:left}
   tbody td{padding:8px;border-bottom:1px solid var(--grid);vertical-align:middle}
@@ -43,7 +43,8 @@
   .c-dist{width:10%; text-align:center}
   .c-start{width:14%}
   .c-shots{width:8%; text-align:center}
-  .c-time{width:10%; text-align:center}
+  .c-time{width:12%; text-align:center}
+  .c-notes{width:auto; min-width:300px}
   .c-hits{width:14%; text-align:center}
   .c-pts{width:8%; text-align:center}
 
@@ -54,7 +55,6 @@
     word-break:break-word;
     hyphens:auto; -webkit-hyphens:auto; -ms-hyphens:auto;
     line-break:anywhere;
-    width:auto; min-width:300px;
   }
 
   /* Inputs & badges */
@@ -80,7 +80,7 @@
     .c-notes{min-width:240px}
   }
 
-  /* Print – fixed widths so printers don’t crush Notes */
+  /* Print – keep Time & Notes visible */
   @page{size:A4;margin:16mm 14mm}
   @media print{
     body{font-size:14px;line-height:1.45}
@@ -95,10 +95,10 @@
     th.c-dist,  td.c-dist  {width:10% !important}
     th.c-start, td.c-start {width:14% !important}
     th.c-shots, td.c-shots {width:8% !important}
-    th.c-time,  td.c-time  {width:10% !important}
-    th.c-hits,  td.c-hits  {width:14% !important}
+    th.c-time,  td.c-time  {width:12% !important}  /* TIME COLUMN */
+    th.c-hits,  td.c-hits  {width:12% !important}
     th.c-pts,   td.c-pts   {width:8% !important}
-    th.c-notes, td.c-notes {width:28% !important} /* keep Notes wide */
+    th.c-notes, td.c-notes {width:28% !important}  /* wide Notes */
   }
 </style>
 </head>
@@ -226,7 +226,7 @@
   </div>
 
 <script>
-  const KEY = "fbi_pistol_qual_full_v1";
+  const KEY = "fbi_pistol_qual_with_time_v1";
 
   function sumShots(){
     let s = 0;
@@ -305,12 +305,10 @@
     document.title = old;
   }
 
-  // init
   document.addEventListener('DOMContentLoaded', ()=>{
     restore();
-    document.querySelectorAll('.hits, #m_date, #m_shooter, #m_pistol').forEach(el => {
-      el.addEventListener('input', recalc);
-    });
+    document.querySelectorAll('.hits, #m_date, #m_shooter, #m_pistol')
+      .forEach(el => el.addEventListener('input', recalc));
     document.getElementById('btnExport').addEventListener('click', doExport);
     document.getElementById('btnClear').addEventListener('click', ()=>{
       document.querySelectorAll('.hits').forEach(i=>i.value="");
